@@ -1,3 +1,365 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Meine Anzeige</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: #f4f4f6;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 440px;
+
+      background: white;
+
+      padding: 28px;
+
+      border-radius: 22px;
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,0.10);
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    input,
+    textarea,
+    button {
+      width: 100%;
+
+      font-size: 18px;
+
+      border-radius: 12px;
+
+      padding: 14px;
+
+      margin-top: 12px;
+    }
+
+    input,
+    textarea {
+      border: 1px solid #ccc;
+    }
+
+    textarea {
+      height: 160px;
+      resize: none;
+    }
+
+    button {
+      border: none;
+
+      background: #111;
+      color: white;
+
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+    #messageArea {
+      display: none;
+    }
+
+    #status {
+      margin-top: 16px;
+      text-align: center;
+      min-height: 24px;
+    }
+
+    .secondary {
+      background: #ddd;
+      color: #111;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1>Nachricht ❤️</h1>
+
+  <div id="loginArea">
+
+    <input
+      id="email"
+      type="email"
+      placeholder="E-Mail"
+    >
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Passwort"
+    >
+
+    <button onclick="login()">
+      Anmelden
+    </button>
+
+  </div>
+
+
+  <div id="messageArea">
+
+    <textarea
+      id="message"
+      maxlength="120"
+      placeholder="Deine Nachricht..."
+    ></textarea>
+
+    <button onclick="sendMessage()">
+      Auf Display anzeigen
+    </button>
+
+    <button
+      class="secondary"
+      onclick="logout()"
+    >
+      Abmelden
+    </button>
+
+  </div>
+
+  <div id="status"></div>
+
+</div>
+
+
+<script>
+
+  // =====================================
+  // HIER DEINE SUPABASE-DATEN EINTRAGEN
+  // =====================================
+
+  const SUPABASE_URL =
+    "https://puyhamcvmweubywijahm.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_KNPxsxxrHKR3dwggwuxP8w_Wm_QUkxU";
+
+
+  const client =
+    supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  // =====================================
+  // STATUS
+  // =====================================
+
+  function showStatus(text) {
+    document.getElementById("status").innerText = text;
+  }
+
+
+  // =====================================
+  // LOGIN
+  // =====================================
+
+  async function login() {
+
+    const email =
+      document.getElementById("email").value;
+
+    const password =
+      document.getElementById("password").value;
+
+
+    showStatus("Anmeldung...");
+
+
+    const { data, error } =
+      await client.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+
+    if (error) {
+
+      showStatus(
+        "Login fehlgeschlagen: " +
+        error.message
+      );
+
+      return;
+    }
+
+
+    showStatus("Angemeldet");
+
+    await showMessageArea();
+  }
+
+
+  // =====================================
+  // LOGOUT
+  // =====================================
+
+  async function logout() {
+
+    await client.auth.signOut();
+
+    document.getElementById(
+      "loginArea"
+    ).style.display = "block";
+
+    document.getElementById(
+      "messageArea"
+    ).style.display = "none";
+
+    showStatus("Abgemeldet");
+  }
+
+
+  // =====================================
+  // NACHRICHT LADEN
+  // =====================================
+
+  async function showMessageArea() {
+
+    document.getElementById(
+      "loginArea"
+    ).style.display = "none";
+
+    document.getElementById(
+      "messageArea"
+    ).style.display = "block";
+
+
+    const { data, error } =
+      await client
+        .from("display_message")
+        .select("message")
+        .eq("id", 1)
+        .single();
+
+
+    if (!error && data) {
+
+      document.getElementById(
+        "message"
+      ).value = data.message;
+
+    }
+  }
+
+
+  // =====================================
+  // NACHRICHT SENDEN
+  // =====================================
+
+  async function sendMessage() {
+
+    const message =
+      document.getElementById(
+        "message"
+      ).value.trim();
+
+
+    if (!message) {
+      showStatus(
+        "Bitte eine Nachricht eingeben."
+      );
+      return;
+    }
+
+
+    showStatus(
+      "Nachricht wird gesendet..."
+    );
+
+
+    const { data, error } =
+      await client
+        .from("display_message")
+        .update({
+          message: message,
+          updated_at:
+            new Date().toISOString()
+        })
+        .eq("id", 1)
+        .select();
+
+
+    if (error) {
+
+      showStatus(
+        "Fehler: " +
+        error.message
+      );
+
+      return;
+    }
+
+
+    showStatus(
+      "Nachricht gesendet ✓"
+    );
+  }
+
+
+  // =====================================
+  // BEIM START PRÜFEN
+  // =====================================
+
+  async function init() {
+
+    const {
+      data: { session }
+    } =
+      await client.auth.getSession();
+
+
+    if (session) {
+
+      await showMessageArea();
+
+    }
+
+  }
+
+
+  init();
+
+</script>
+
+</body>
+</html>
