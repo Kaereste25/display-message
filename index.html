@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Meine Anzeige</title>
+  <title>Meine Nachricht ❤️</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
+
       margin: 0;
-      padding: 24px;
+
       min-height: 100vh;
 
       font-family:
@@ -27,91 +32,287 @@
         "Segoe UI",
         sans-serif;
 
-      background: #f4f4f6;
+      background:
+        linear-gradient(
+          135deg,
+          #f7f4ef,
+          #eee9e1
+        );
 
       display: flex;
       justify-content: center;
       align-items: center;
+
+      padding: 20px;
     }
 
     .card {
-      width: 100%;
-      max-width: 440px;
 
-      background: white;
+      width: 100%;
+      max-width: 460px;
+
+      background: rgba(255,255,255,0.95);
+
+      border-radius: 28px;
 
       padding: 28px;
 
-      border-radius: 22px;
-
       box-shadow:
-        0 8px 30px rgba(0,0,0,0.10);
+        0 12px 40px
+        rgba(0,0,0,0.12);
     }
 
     h1 {
-      margin-top: 0;
+
       text-align: center;
+
+      margin: 0 0 8px 0;
+
+      font-size: 28px;
+    }
+
+    .subtitle {
+
+      text-align: center;
+
+      color: #777;
+
+      margin-bottom: 24px;
     }
 
     input,
-    textarea,
-    button {
+    textarea {
+
       width: 100%;
 
-      font-size: 18px;
+      border: 1px solid #d7d7d7;
 
-      border-radius: 12px;
+      border-radius: 14px;
 
-      padding: 14px;
+      padding: 15px;
 
-      margin-top: 12px;
+      font-size: 17px;
+
+      font-family: inherit;
+
+      outline: none;
+
+      background: white;
     }
 
-    input,
-    textarea {
-      border: 1px solid #ccc;
+    input:focus,
+    textarea:focus {
+
+      border-color: #888;
     }
 
     textarea {
-      height: 160px;
+
+      height: 150px;
+
       resize: none;
+
+      margin-top: 10px;
     }
 
     button {
+
+      width: 100%;
+
       border: none;
 
-      background: #111;
+      border-radius: 14px;
+
+      padding: 15px;
+
+      margin-top: 14px;
+
+      font-size: 17px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      background: #202020;
+
       color: white;
+    }
+
+    button:active {
+
+      transform: scale(0.99);
+    }
+
+    .secondary {
+
+      background: #ececec;
+
+      color: #222;
+    }
+
+    .colors {
+
+      display: flex;
+
+      gap: 12px;
+
+      justify-content: center;
+
+      margin-top: 16px;
+
+      flex-wrap: wrap;
+    }
+
+    .color {
+
+      width: 54px;
+      height: 54px;
+
+      border-radius: 50%;
+
+      border: 4px solid white;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,0.18);
 
       cursor: pointer;
     }
 
-    button:disabled {
-      opacity: 0.5;
+    .color.selected {
+
+      outline: 3px solid #222;
+
+      outline-offset: 2px;
+    }
+
+    .preview-area {
+
+      margin-top: 24px;
+
+      display: flex;
+
+      justify-content: center;
+    }
+
+    .note {
+
+      width: 100%;
+
+      max-width: 330px;
+
+      min-height: 190px;
+
+      padding: 34px 22px 22px;
+
+      position: relative;
+
+      border-radius: 8px;
+
+      box-shadow:
+        7px 8px 12px
+        rgba(0,0,0,0.15);
+
+      transition:
+        background 0.2s ease;
+    }
+
+    .pin {
+
+      position: absolute;
+
+      top: -8px;
+
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      width: 22px;
+      height: 22px;
+
+      border-radius: 50%;
+
+      background: #d94a4a;
+
+      box-shadow:
+        0 2px 5px
+        rgba(0,0,0,0.25);
+
+      border: 2px solid white;
+    }
+
+    .preview-text {
+
+      white-space: pre-wrap;
+
+      word-wrap: break-word;
+
+      font-family:
+        "Comic Sans MS",
+        "Segoe Print",
+        cursive;
+
+      font-size: 21px;
+
+      color: #252525;
+
+      line-height: 1.45;
+
+      text-align: left;
     }
 
     #messageArea {
+
       display: none;
     }
 
     #status {
-      margin-top: 16px;
+
+      min-height: 26px;
+
       text-align: center;
-      min-height: 24px;
+
+      margin-top: 15px;
+
+      color: #555;
     }
 
-    .secondary {
-      background: #ddd;
-      color: #111;
+    .label {
+
+      display: block;
+
+      margin-top: 18px;
+
+      margin-bottom: 6px;
+
+      font-weight: 600;
     }
+
+    .logout {
+
+      margin-top: 10px;
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
 <div class="card">
 
-  <h1>Nachricht ❤️</h1>
+  <h1>Meine Nachricht ❤️</h1>
+
+  <div class="subtitle">
+    Eine kleine Nachricht für Kaereste
+  </div>
+
+
+  <!-- ========================================= -->
+  <!-- LOGIN -->
+  <!-- ========================================= -->
 
   <div id="loginArea">
 
@@ -119,12 +320,14 @@
       id="email"
       type="email"
       placeholder="E-Mail"
+      autocomplete="email"
     >
 
     <input
       id="password"
       type="password"
       placeholder="Passwort"
+      autocomplete="current-password"
     >
 
     <button onclick="login()">
@@ -134,26 +337,107 @@
   </div>
 
 
+  <!-- ========================================= -->
+  <!-- NACHRICHTENBEREICH -->
+  <!-- ========================================= -->
+
   <div id="messageArea">
+
+    <label class="label">
+      Deine Nachricht
+    </label>
 
     <textarea
       id="message"
-      maxlength="120"
-      placeholder="Deine Nachricht..."
+      maxlength="160"
+      placeholder="Schreib etwas Schönes..."
+      oninput="updatePreview()"
     ></textarea>
 
+
+    <label class="label">
+      Zettelfarbe
+    </label>
+
+
+    <div class="colors">
+
+      <div
+        class="color selected"
+        data-color="#FFF0A8"
+        style="background:#FFF0A8"
+        onclick="selectColor(this)"
+      ></div>
+
+      <div
+        class="color"
+        data-color="#FFD6E7"
+        style="background:#FFD6E7"
+        onclick="selectColor(this)"
+      ></div>
+
+      <div
+        class="color"
+        data-color="#CFEFFF"
+        style="background:#CFEFFF"
+        onclick="selectColor(this)"
+      ></div>
+
+      <div
+        class="color"
+        data-color="#D8F3D0"
+        style="background:#D8F3D0"
+        onclick="selectColor(this)"
+      ></div>
+
+      <div
+        class="color"
+        data-color="#F5E8D0"
+        style="background:#F5E8D0"
+        onclick="selectColor(this)"
+      ></div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- VORSCHAU -->
+    <!-- ========================================= -->
+
+    <div class="preview-area">
+
+      <div
+        class="note"
+        id="notePreview"
+      >
+
+        <div class="pin"></div>
+
+        <div
+          class="preview-text"
+          id="previewText"
+        >
+          Deine Nachricht erscheint hier...
+        </div>
+
+      </div>
+
+    </div>
+
+
     <button onclick="sendMessage()">
-      Auf Display anzeigen
+      ❤️ Auf Display anzeigen
     </button>
 
     <button
-      class="secondary"
+      class="secondary logout"
       onclick="logout()"
     >
       Abmelden
     </button>
 
   </div>
+
 
   <div id="status"></div>
 
@@ -162,202 +446,395 @@
 
 <script>
 
-  // =====================================
-  // HIER DEINE SUPABASE-DATEN EINTRAGEN
-  // =====================================
+// =====================================================
+// SUPABASE
+// =====================================================
 
-  const SUPABASE_URL =
-    "https://puyhamcvmweubywijahm.supabase.co";
+const SUPABASE_URL =
+  "https://DEIN-PROJEKT.supabase.co";
 
-  const SUPABASE_KEY =
-    "sb_publishable_KNPxsxxrHKR3dwggwuxP8w_Wm_QUkxU";
+const SUPABASE_KEY =
+  "DEIN_SUPABASE_PUBLISHABLE_KEY";
 
 
-  const client =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
+const client =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+// =====================================================
+// AKTUELLE FARBE
+// =====================================================
+
+let selectedColor =
+  "#FFF0A8";
+
+
+// =====================================================
+// STATUS
+// =====================================================
+
+function showStatus(text) {
+
+  document.getElementById(
+    "status"
+  ).innerText = text;
+}
+
+
+// =====================================================
+// FARBE AUSWÄHLEN
+// =====================================================
+
+function selectColor(element) {
+
+  // alle abwählen
+  document
+    .querySelectorAll(".color")
+    .forEach(
+      color => {
+        color.classList.remove(
+          "selected"
+        );
+      }
     );
 
 
-  // =====================================
-  // STATUS
-  // =====================================
+  // ausgewählte Farbe markieren
+  element.classList.add(
+    "selected"
+  );
 
-  function showStatus(text) {
-    document.getElementById("status").innerText = text;
+
+  selectedColor =
+    element.dataset.color;
+
+
+  updatePreview();
+}
+
+
+// =====================================================
+// VORSCHAU AKTUALISIEREN
+// =====================================================
+
+function updatePreview() {
+
+  const text =
+    document.getElementById(
+      "message"
+    ).value;
+
+
+  const preview =
+    document.getElementById(
+      "previewText"
+    );
+
+
+  const note =
+    document.getElementById(
+      "notePreview"
+    );
+
+
+  if (text.length > 0) {
+
+    preview.innerText =
+      text;
+
+  } else {
+
+    preview.innerText =
+      "Deine Nachricht erscheint hier...";
   }
 
 
-  // =====================================
-  // LOGIN
-  // =====================================
-
-  async function login() {
-
-    const email =
-      document.getElementById("email").value;
-
-    const password =
-      document.getElementById("password").value;
+  note.style.background =
+    selectedColor;
+}
 
 
-    showStatus("Anmeldung...");
+// =====================================================
+// LOGIN
+// =====================================================
+
+async function login() {
+
+  const email =
+    document.getElementById(
+      "email"
+    ).value;
+
+  const password =
+    document.getElementById(
+      "password"
+    ).value;
 
 
-    const { data, error } =
-      await client.auth.signInWithPassword({
-        email: email,
-        password: password
+  showStatus(
+    "Anmeldung..."
+  );
+
+
+  const {
+    data,
+    error
+  } =
+    await client.auth
+      .signInWithPassword({
+
+        email:
+          email,
+
+        password:
+          password
       });
 
 
-    if (error) {
+  if (error) {
 
-      showStatus(
-        "Login fehlgeschlagen: " +
-        error.message
-      );
+    showStatus(
+      "Login fehlgeschlagen: " +
+      error.message
+    );
 
-      return;
+    return;
+  }
+
+
+  showStatus(
+    "Angemeldet ✓"
+  );
+
+
+  await showMessageArea();
+}
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+async function logout() {
+
+  await client.auth.signOut();
+
+
+  document.getElementById(
+    "loginArea"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "messageArea"
+  ).style.display =
+    "none";
+
+
+  showStatus(
+    "Abgemeldet"
+  );
+}
+
+
+// =====================================================
+// NACHRICHT + FARBE LADEN
+// =====================================================
+
+async function showMessageArea() {
+
+  document.getElementById(
+    "loginArea"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "messageArea"
+  ).style.display =
+    "block";
+
+
+  const {
+    data,
+    error
+  } =
+    await client
+      .from(
+        "display_message"
+      )
+      .select(
+        "message,note_color"
+      )
+      .eq(
+        "id",
+        1
+      )
+      .single();
+
+
+  if (error) {
+
+    console.error(error);
+
+    return;
+  }
+
+
+  if (data) {
+
+    document.getElementById(
+      "message"
+    ).value =
+      data.message || "";
+
+
+    if (
+      data.note_color
+    ) {
+
+      selectedColor =
+        data.note_color;
+
+
+      document
+        .querySelectorAll(
+          ".color"
+        )
+        .forEach(
+          color => {
+
+            color.classList.remove(
+              "selected"
+            );
+
+
+            if (
+              color.dataset.color
+                .toUpperCase()
+              ===
+              selectedColor
+                .toUpperCase()
+            ) {
+
+              color.classList.add(
+                "selected"
+              );
+            }
+          }
+        );
     }
 
 
-    showStatus("Angemeldet");
+    updatePreview();
+  }
+}
+
+
+// =====================================================
+// NACHRICHT SENDEN
+// =====================================================
+
+async function sendMessage() {
+
+  const message =
+    document.getElementById(
+      "message"
+    ).value.trim();
+
+
+  if (!message) {
+
+    showStatus(
+      "Bitte eine Nachricht eingeben."
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "Nachricht wird gesendet..."
+  );
+
+
+  const {
+    error
+  } =
+    await client
+      .from(
+        "display_message"
+      )
+      .update({
+
+        message:
+          message,
+
+        note_color:
+          selectedColor,
+
+        updated_at:
+          new Date().toISOString()
+
+      })
+      .eq(
+        "id",
+        1
+      );
+
+
+  if (error) {
+
+    console.error(error);
+
+    showStatus(
+      "Fehler: " +
+      error.message
+    );
+
+    return;
+  }
+
+
+  showStatus(
+    "Gesendet ❤️"
+  );
+}
+
+
+// =====================================================
+// BEIM START SESSION PRÜFEN
+// =====================================================
+
+async function init() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await client.auth.getSession();
+
+
+  if (session) {
 
     await showMessageArea();
   }
-
-
-  // =====================================
-  // LOGOUT
-  // =====================================
-
-  async function logout() {
-
-    await client.auth.signOut();
+  else {
 
     document.getElementById(
       "loginArea"
-    ).style.display = "block";
-
-    document.getElementById(
-      "messageArea"
-    ).style.display = "none";
-
-    showStatus("Abgemeldet");
+    ).style.display =
+      "block";
   }
+}
 
 
-  // =====================================
-  // NACHRICHT LADEN
-  // =====================================
-
-  async function showMessageArea() {
-
-    document.getElementById(
-      "loginArea"
-    ).style.display = "none";
-
-    document.getElementById(
-      "messageArea"
-    ).style.display = "block";
-
-
-    const { data, error } =
-      await client
-        .from("display_message")
-        .select("message")
-        .eq("id", 1)
-        .single();
-
-
-    if (!error && data) {
-
-      document.getElementById(
-        "message"
-      ).value = data.message;
-
-    }
-  }
-
-
-  // =====================================
-  // NACHRICHT SENDEN
-  // =====================================
-
-  async function sendMessage() {
-
-    const message =
-      document.getElementById(
-        "message"
-      ).value.trim();
-
-
-    if (!message) {
-      showStatus(
-        "Bitte eine Nachricht eingeben."
-      );
-      return;
-    }
-
-
-    showStatus(
-      "Nachricht wird gesendet..."
-    );
-
-
-    const { data, error } =
-      await client
-        .from("display_message")
-        .update({
-          message: message,
-          updated_at:
-            new Date().toISOString()
-        })
-        .eq("id", 1)
-        .select();
-
-
-    if (error) {
-
-      showStatus(
-        "Fehler: " +
-        error.message
-      );
-
-      return;
-    }
-
-
-    showStatus(
-      "Nachricht gesendet ✓"
-    );
-  }
-
-
-  // =====================================
-  // BEIM START PRÜFEN
-  // =====================================
-
-  async function init() {
-
-    const {
-      data: { session }
-    } =
-      await client.auth.getSession();
-
-
-    if (session) {
-
-      await showMessageArea();
-
-    }
-
-  }
-
-
-  init();
+init();
 
 </script>
 
