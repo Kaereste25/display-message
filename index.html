@@ -49,9 +49,9 @@
     .card {
 
       width: 100%;
-      max-width: 460px;
+      max-width: 480px;
 
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.96);
 
       border-radius: 28px;
 
@@ -66,7 +66,8 @@
 
       text-align: center;
 
-      margin: 0 0 8px 0;
+      margin:
+        0 0 8px 0;
 
       font-size: 28px;
     }
@@ -80,12 +81,24 @@
       margin-bottom: 24px;
     }
 
+    .label {
+
+      display: block;
+
+      margin-top: 18px;
+      margin-bottom: 7px;
+
+      font-weight: 600;
+    }
+
     input,
-    textarea {
+    textarea,
+    select {
 
       width: 100%;
 
-      border: 1px solid #d7d7d7;
+      border:
+        1px solid #d7d7d7;
 
       border-radius: 14px;
 
@@ -101,7 +114,8 @@
     }
 
     input:focus,
-    textarea:focus {
+    textarea:focus,
+    select:focus {
 
       border-color: #888;
     }
@@ -110,9 +124,11 @@
 
       height: 150px;
 
-      resize: none;
+      resize: vertical;
 
-      margin-top: 10px;
+      min-height: 100px;
+
+      margin-top: 8px;
     }
 
     button {
@@ -143,6 +159,14 @@
       transform: scale(0.99);
     }
 
+    button:disabled {
+
+      opacity: 0.5;
+
+      cursor:
+        not-allowed;
+    }
+
     .secondary {
 
       background: #ececec;
@@ -158,19 +182,20 @@
 
       justify-content: center;
 
-      margin-top: 16px;
+      margin-top: 15px;
 
       flex-wrap: wrap;
     }
 
     .color {
 
-      width: 54px;
-      height: 54px;
+      width: 52px;
+      height: 52px;
 
       border-radius: 50%;
 
-      border: 4px solid white;
+      border:
+        4px solid white;
 
       box-shadow:
         0 2px 8px
@@ -181,14 +206,15 @@
 
     .color.selected {
 
-      outline: 3px solid #222;
+      outline:
+        3px solid #222;
 
       outline-offset: 2px;
     }
 
     .preview-area {
 
-      margin-top: 24px;
+      margin-top: 25px;
 
       display: flex;
 
@@ -199,11 +225,12 @@
 
       width: 100%;
 
-      max-width: 330px;
+      max-width: 340px;
 
       min-height: 190px;
 
-      padding: 34px 22px 22px;
+      padding:
+        34px 22px 22px;
 
       position: relative;
 
@@ -239,14 +266,17 @@
         0 2px 5px
         rgba(0,0,0,0.25);
 
-      border: 2px solid white;
+      border:
+        2px solid white;
     }
 
     .preview-text {
 
-      white-space: pre-wrap;
+      white-space:
+        pre-wrap;
 
-      word-wrap: break-word;
+      overflow-wrap:
+        anywhere;
 
       font-family:
         "Comic Sans MS",
@@ -258,8 +288,28 @@
       color: #252525;
 
       line-height: 1.45;
+    }
 
-      text-align: left;
+    .recipient-info {
+
+      margin-top: 8px;
+
+      padding: 12px 14px;
+
+      background: #f5f5f5;
+
+      border-radius: 12px;
+
+      font-size: 14px;
+
+      color: #555;
+
+      text-align: center;
+    }
+
+    #loginArea {
+
+      display: block;
     }
 
     #messageArea {
@@ -278,20 +328,14 @@
       color: #555;
     }
 
-    .label {
+    .error {
 
-      display: block;
-
-      margin-top: 18px;
-
-      margin-bottom: 6px;
-
-      font-weight: 600;
+      color: #b42318 !important;
     }
 
-    .logout {
+    .success {
 
-      margin-top: 10px;
+      color: #087443 !important;
     }
 
   </style>
@@ -303,10 +347,12 @@
 
 <div class="card">
 
-  <h1>Meine Nachricht ❤️</h1>
+  <h1>
+    Meine Nachricht ❤️
+  </h1>
 
   <div class="subtitle">
-    Eine kleine Nachricht für Kaereste
+    Kleine Nachrichten für euch beide
   </div>
 
 
@@ -330,7 +376,9 @@
       autocomplete="current-password"
     >
 
-    <button onclick="login()">
+    <button
+      onclick="login()"
+    >
       Anmelden
     </button>
 
@@ -344,21 +392,42 @@
   <div id="messageArea">
 
     <label class="label">
+      Nachricht für
+    </label>
+
+    <select id="recipient">
+      <option value="">
+        Empfänger wird geladen...
+      </option>
+    </select>
+
+    <div
+      class="recipient-info"
+      id="recipientInfo"
+    >
+      Wähle einen Empfänger aus.
+    </div>
+
+
+    <!-- Nachricht -->
+
+    <label class="label">
       Deine Nachricht
     </label>
 
     <textarea
       id="message"
-      maxlength="160"
+      maxlength="250"
       placeholder="Schreib etwas Schönes..."
       oninput="updatePreview()"
     ></textarea>
 
 
+    <!-- Zettelfarbe -->
+
     <label class="label">
       Zettelfarbe
     </label>
-
 
     <div class="colors">
 
@@ -400,9 +469,7 @@
     </div>
 
 
-    <!-- ========================================= -->
-    <!-- VORSCHAU -->
-    <!-- ========================================= -->
+    <!-- Vorschau -->
 
     <div class="preview-area">
 
@@ -425,12 +492,16 @@
     </div>
 
 
-    <button onclick="sendMessage()">
-      ❤️ Auf Display anzeigen
+    <button
+      id="sendButton"
+      onclick="sendMessage()"
+    >
+      ❤️ Nachricht senden
     </button>
 
+
     <button
-      class="secondary logout"
+      class="secondary"
       onclick="logout()"
     >
       Abmelden
@@ -439,7 +510,9 @@
   </div>
 
 
-  <div id="status"></div>
+  <div
+    id="status"
+  ></div>
 
 </div>
 
@@ -449,6 +522,8 @@
 // =====================================================
 // SUPABASE
 // =====================================================
+
+// HIER DEINE ECHTEN DATEN EINTRAGEN
 
 const SUPABASE_URL =
   "https://puyhamcvmweubywijahm.supabase.co";
@@ -465,22 +540,36 @@ const client =
 
 
 // =====================================================
-// AKTUELLE FARBE
+// VARIABLEN
 // =====================================================
+
+let currentUser = null;
 
 let selectedColor =
   "#FFF0A8";
+
+let profiles = [];
 
 
 // =====================================================
 // STATUS
 // =====================================================
 
-function showStatus(text) {
+function showStatus(
+  text,
+  type = ""
+) {
 
-  document.getElementById(
-    "status"
-  ).innerText = text;
+  const status =
+    document.getElementById(
+      "status"
+    );
+
+  status.innerText =
+    text;
+
+  status.className =
+    type;
 }
 
 
@@ -488,21 +577,25 @@ function showStatus(text) {
 // FARBE AUSWÄHLEN
 // =====================================================
 
-function selectColor(element) {
+function selectColor(
+  element
+) {
 
-  // alle abwählen
   document
-    .querySelectorAll(".color")
+    .querySelectorAll(
+      ".color"
+    )
     .forEach(
       color => {
+
         color.classList.remove(
           "selected"
         );
+
       }
     );
 
 
-  // ausgewählte Farbe markieren
   element.classList.add(
     "selected"
   );
@@ -540,7 +633,9 @@ function updatePreview() {
     );
 
 
-  if (text.length > 0) {
+  if (
+    text.length > 0
+  ) {
 
     preview.innerText =
       text;
@@ -566,12 +661,27 @@ async function login() {
   const email =
     document.getElementById(
       "email"
-    ).value;
+    ).value
+      .trim();
 
   const password =
     document.getElementById(
       "password"
     ).value;
+
+
+  if (
+    !email ||
+    !password
+  ) {
+
+    showStatus(
+      "Bitte E-Mail und Passwort eingeben.",
+      "error"
+    );
+
+    return;
+  }
 
 
   showStatus(
@@ -591,22 +701,34 @@ async function login() {
 
         password:
           password
+
       });
 
 
   if (error) {
 
+    console.error(
+      "Login error:",
+      error
+    );
+
     showStatus(
       "Login fehlgeschlagen: " +
-      error.message
+      error.message,
+      "error"
     );
 
     return;
   }
 
 
+  currentUser =
+    data.user;
+
+
   showStatus(
-    "Angemeldet ✓"
+    "Angemeldet ✓",
+    "success"
   );
 
 
@@ -622,18 +744,18 @@ async function logout() {
 
   await client.auth.signOut();
 
+  currentUser =
+    null;
 
   document.getElementById(
     "loginArea"
   ).style.display =
     "block";
 
-
   document.getElementById(
     "messageArea"
   ).style.display =
     "none";
-
 
   showStatus(
     "Abgemeldet"
@@ -642,7 +764,175 @@ async function logout() {
 
 
 // =====================================================
-// NACHRICHT + FARBE LADEN
+// PROFILE LADEN
+// =====================================================
+
+async function loadProfiles() {
+
+  const {
+    data,
+    error
+  } =
+    await client
+      .from("profiles")
+      .select(
+        "id, display_name, display_id"
+      )
+      .order(
+        "display_name"
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Profiles error:",
+      error
+    );
+
+    showStatus(
+      "Empfänger konnten nicht geladen werden: " +
+      error.message,
+      "error"
+    );
+
+    return false;
+  }
+
+
+  profiles =
+    data || [];
+
+
+  const select =
+    document.getElementById(
+      "recipient"
+    );
+
+
+  select.innerHTML = "";
+
+
+  // Eigene Person nicht als Empfänger anzeigen
+  const recipients =
+    profiles.filter(
+      profile =>
+        profile.id !==
+        currentUser.id
+    );
+
+
+  if (
+    recipients.length === 0
+  ) {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value = "";
+
+    option.textContent =
+      "Kein Empfänger vorhanden";
+
+    select.appendChild(
+      option
+    );
+
+    updateRecipientInfo();
+
+    return false;
+  }
+
+
+  recipients.forEach(
+    profile => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        profile.id;
+
+      option.textContent =
+        profile.display_name;
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  select.onchange =
+    updateRecipientInfo;
+
+
+  updateRecipientInfo();
+
+
+  return true;
+}
+
+
+// =====================================================
+// EMPFÄNGER-INFO
+// =====================================================
+
+function updateRecipientInfo() {
+
+  const select =
+    document.getElementById(
+      "recipient"
+    );
+
+  const info =
+    document.getElementById(
+      "recipientInfo"
+    );
+
+
+  if (
+    !select.value
+  ) {
+
+    info.innerText =
+      "Kein Empfänger ausgewählt.";
+
+    return;
+  }
+
+
+  const selected =
+    profiles.find(
+      profile =>
+        profile.id ===
+        select.value
+    );
+
+
+  if (!selected) {
+
+    info.innerText =
+      "";
+
+    return;
+  }
+
+
+  info.innerText =
+    "Diese Nachricht erscheint auf dem Display von " +
+    selected.display_name +
+    ".";
+}
+
+
+// =====================================================
+// NACHRICHTENBEREICH
 // =====================================================
 
 async function showMessageArea() {
@@ -659,79 +949,10 @@ async function showMessageArea() {
     "block";
 
 
-  const {
-    data,
-    error
-  } =
-    await client
-      .from(
-        "display_message"
-      )
-      .select(
-        "message,note_color"
-      )
-      .eq(
-        "id",
-        1
-      )
-      .single();
+  await loadProfiles();
 
 
-  if (error) {
-
-    console.error(error);
-
-    return;
-  }
-
-
-  if (data) {
-
-    document.getElementById(
-      "message"
-    ).value =
-      data.message || "";
-
-
-    if (
-      data.note_color
-    ) {
-
-      selectedColor =
-        data.note_color;
-
-
-      document
-        .querySelectorAll(
-          ".color"
-        )
-        .forEach(
-          color => {
-
-            color.classList.remove(
-              "selected"
-            );
-
-
-            if (
-              color.dataset.color
-                .toUpperCase()
-              ===
-              selectedColor
-                .toUpperCase()
-            ) {
-
-              color.classList.add(
-                "selected"
-              );
-            }
-          }
-        );
-    }
-
-
-    updatePreview();
-  }
+  updatePreview();
 }
 
 
@@ -741,20 +962,60 @@ async function showMessageArea() {
 
 async function sendMessage() {
 
+  if (!currentUser) {
+
+    showStatus(
+      "Bitte zuerst anmelden.",
+      "error"
+    );
+
+    return;
+  }
+
+
   const message =
     document.getElementById(
       "message"
-    ).value.trim();
+    ).value
+      .trim();
+
+
+  const recipientId =
+    document.getElementById(
+      "recipient"
+    ).value;
+
+
+  if (!recipientId) {
+
+    showStatus(
+      "Bitte einen Empfänger auswählen.",
+      "error"
+    );
+
+    return;
+  }
 
 
   if (!message) {
 
     showStatus(
-      "Bitte eine Nachricht eingeben."
+      "Bitte eine Nachricht eingeben.",
+      "error"
     );
 
     return;
   }
+
+
+  const button =
+    document.getElementById(
+      "sendButton"
+    );
+
+
+  button.disabled =
+    true;
 
 
   showStatus(
@@ -766,70 +1027,112 @@ async function sendMessage() {
     error
   } =
     await client
-      .from(
-        "display_message"
-      )
-      .update({
+      .from("messages")
+      .insert({
+
+        sender_id:
+          currentUser.id,
+
+        recipient_id:
+          recipientId,
 
         message:
           message,
 
         note_color:
-          selectedColor,
+          selectedColor
 
-        updated_at:
-          new Date().toISOString()
+      });
 
-      })
-      .eq(
-        "id",
-        1
-      );
+
+  button.disabled =
+    false;
 
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Send error:",
+      error
+    );
 
     showStatus(
-      "Fehler: " +
-      error.message
+      "Fehler beim Senden: " +
+      error.message,
+      "error"
     );
 
     return;
   }
 
 
+  const recipient =
+    profiles.find(
+      profile =>
+        profile.id ===
+        recipientId
+    );
+
+
   showStatus(
-    "Gesendet ❤️"
+    "Nachricht an " +
+    recipient.display_name +
+    " gesendet ❤️",
+    "success"
   );
 }
 
 
 // =====================================================
-// BEIM START SESSION PRÜFEN
+// SESSION PRÜFEN
 // =====================================================
 
 async function init() {
 
   const {
-    data: {
-      session
-    }
+    data,
+    error
   } =
-    await client.auth.getSession();
+    await client.auth
+      .getSession();
 
 
-  if (session) {
+  if (error) {
+
+    console.error(
+      error
+    );
+
+    showStatus(
+      "Supabase-Verbindung fehlgeschlagen.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    data.session &&
+    data.session.user
+  ) {
+
+    currentUser =
+      data.session.user;
 
     await showMessageArea();
-  }
-  else {
+
+  } else {
 
     document.getElementById(
       "loginArea"
     ).style.display =
       "block";
+
+    document.getElementById(
+      "messageArea"
+    ).style.display =
+      "none";
   }
 }
 
@@ -839,4 +1142,5 @@ init();
 </script>
 
 </body>
+
 </html>
